@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Data
+data/parquet/
+*.parquet
+*.csv.gz
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Environment
+.env
+.env.local
+
+# Test
+.pytest_cache/
+htmlcov/
+.coverage*
+coverage.xml
+
+# Reports
+buy_report_*
+
+# IDE continued
+.marscode/
+
+# Claude
+.claude/
+.claw.json

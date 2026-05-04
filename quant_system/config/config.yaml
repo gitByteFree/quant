@@ -1,0 +1,100 @@
+# 量化系统配置文件
+# 环境变量替换: ${VAR:default}
+
+data:
+  provider: akshare
+  cache_path: data/parquet
+  rate_limit_per_minute: 30
+  max_retries: 3
+  retry_delay_seconds: 1.0
+
+  symbols:
+    # 为空则获取全部A股
+    include: []
+    exclude: []
+
+  date_range:
+    start: "2010-01-01"
+    end: null  # null=至今
+
+data_clean:
+  remove_st: true
+  remove_suspend_days: 60
+  forward_fill_limit: 5
+  mad_threshold: 3.0
+  min_daily_volume: 0
+
+factor:
+  neutralization: true
+  neutralization_method: regression
+  industry_neutralize: true
+  market_cap_neutralize: true
+  standardization: zscore
+
+model:
+  lightgbm:
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 8
+    num_leaves: 128
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_samples: 100
+    reg_alpha: 0.1
+    reg_lambda: 1.0
+    early_stopping_rounds: 50
+    random_state: 42
+    objective: regression
+    boosting_type: gbdt
+
+  tabnet:
+    n_d: 64
+    n_a: 64
+    n_steps: 5
+    gamma: 1.5
+    n_independent: 2
+    n_shared: 2
+    momentum: 0.3
+    mask_type: entmax
+    optimizer: adam
+    learning_rate: 0.001
+    scheduler_patience: 10
+
+  transformer:
+    d_model: 128
+    n_heads: 8
+    n_layers: 3
+    d_feedforward: 512
+    dropout: 0.1
+    seq_len: 60
+    learning_rate: 0.001
+    batch_size: 256
+    max_epochs: 100
+    patience: 10
+
+train:
+  window_type: rolling
+  train_window_years: 5
+  valid_window_years: 1
+  step_months: 6
+  time_decay_alpha: 0.95
+  use_volatility_weight: true
+
+backtest:
+  initial_capital: 10000000.0
+  rebalance_freq: daily
+  top_k: 100
+  weighting: equal
+  stamp_duty: 0.001
+  commission: 0.00025
+  slippage: 0.001
+  max_single_weight: 0.03
+  max_industry_deviation: 0.05
+  max_drawdown_threshold: 0.15
+  drawdown_reduction: 0.5
+  benchmark: "000300"
+
+system:
+  log_level: INFO
+  log_file: null
+  seed: 42

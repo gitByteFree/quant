@@ -1,0 +1,60 @@
+# 回测专用配置
+
+scenarios:
+  # 全时段回测
+  full_period:
+    start: "2015-01-01"
+    end: "2024-12-31"
+
+  # 牛市分段
+  bull_2015:
+    start: "2015-01-01"
+    end: "2015-06-12"
+    label: "2015上半年牛市"
+
+  # 熊市分段
+  bear_2018:
+    start: "2018-01-01"
+    end: "2018-12-31"
+    label: "2018熊市"
+
+  # 结构市
+  structural_2020:
+    start: "2020-01-01"
+    end: "2020-12-31"
+    label: "2020结构市"
+
+# 基准配置
+benchmarks:
+  - symbol: "000300"
+    name: "沪深300"
+  - symbol: "000905"
+    name: "中证500"
+  - symbol: "equal_weight"
+    name: "等权基准"
+
+# 稳健性检验
+robustness:
+  shuffle_trials: 100
+  param_sensitivity:
+    factor_windows: [5, 10, 20, 40, 60]
+    holding_periods: [1, 5, 10, 20]
+  sub_periods:
+    - [2010, 2015]
+    - [2016, 2020]
+    - [2021, 2024]
+
+risk_limits:
+  industry_deviation: 0.05
+  single_stock_max_weight: 0.03
+  max_drawdown_60d: 0.15
+  position_reduction_on_breach: 0.5
+  barra_style_exposure_limit: 0.3
+
+cost_model:
+  stamp_duty: 0.001
+  commission: 0.00025
+  slippage: 0.001
+  min_commission: 5.0  # 最低佣金5元
+  consider_impact: true  # 是否考虑市场冲击
+  impact_coefficient: 0.1
